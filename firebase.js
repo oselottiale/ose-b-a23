@@ -5,6 +5,4 @@ const firebaseConfig = {
   appId: "1:492186174522:web:bdae6cd85f8c7a6d74a103"
 };
 firebase.initializeApp(firebaseConfig);
-
 window.auth = firebase.auth();
-
