@@ -93,37 +93,35 @@
       <img src="https://t4.oseale.com/oseale-logo.png" width="100px" height="100px">
     </div>
     <h2>Kirjaudu</h2>
-    <input type="email" id="email" placeholder="Sähköposti (eduvantaa)" />
-    <input type="password" id="code" placeholder="Salasana" />
-    <button id="unlockBtn">Kirjaudu</button>
+    <input type="email" id="email" placeholder="Sähköposti" />
+    <input type="password" id="password" placeholder="Salasana" />
+    <button id="loginBtn">Kirjaudu</button>
     <a href="https://repe.oseale.com/sign-up/" class="signup">Rekisteröidy</a>
     <div class="footer">© 2025 Oseale.</div>
   </div>
 
   <script type="module">
-    import { remoteConfig, fetchAndActivate, getValue } from 'https://t4.oseale.com/firebase.js';
-
+    import { auth } from "./firebase.js";
+    import { signInWithEmailAndPassword } from "firebase/auth";
+    
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
     const unlockBtn = document.getElementById("unlockBtn");
-    const codeInput = document.getElementById("code");
-
-    unlockBtn.addEventListener("click", async () => {
-      const userCode = codeInput.value.trim();
-
-      try {
-        await fetchAndActivate(remoteConfig);
-        const secretCode = getValue(remoteConfig, "secret_code").asString().trim();
-
-        console.log("User entered:", userCode);
-
-        if (userCode === secretCode) {
-          window.location.href = "https://docs.google.com/presentation/d/19q6v5NqyDLkIB89l-IFuDSy2njVl7bPuESDeXtLZCCQ/edit?usp=sharing";
-        } else {
-          alert("Incorrect code.");
-        }
-      } catch (err) {
-        console.error("Remote Config error:", err);
-        alert("Could not verify code.");
-      }
+    
+    unlockBtn.addEventListener("click", () => {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+    
+      signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          const user = userCredential.user;
+          alert(`Tervetuloa, ${user.email}`);
+          // Optional: redirect after login
+          window.location.href = "https://repe.oseale.com/paneeli";
+        })
+        .catch(error => {
+          alert(`Kirjautuminen epäonnistui: ${error.message}`);
+        });
     });
   </script>
 </body>
