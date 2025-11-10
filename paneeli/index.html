@@ -430,13 +430,13 @@
       }
     }
 
-      onAuthStateChanged(auth, user => {
-        if (user) {
-          loadIlmoitukset();
-        } else {
-          window.location.href = "https://repe.oseale.com";
-        }
-      });
+      window.auth.onAuthStateChanged(user => {
+      if (user) {
+        loadIlmoitukset();
+      } else {
+        window.location.href = "https://repe.oseale.com";
+      }
+    });
     </script>
 </body>
 </html>
