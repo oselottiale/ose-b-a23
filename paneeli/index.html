@@ -299,6 +299,8 @@
 
 
     </style>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div class="ldr"></div>
@@ -310,13 +312,19 @@
         <div class="footer">&copy 2025 Oseale.</div>
     </div>
     <div id="expanded-view" class="details-box hidden"><button id="back-button">Takaisin</button></div>
-    <script>
+    <script type="module">
+      import { auth } from "https://repe.oseale.com/firebase.js";
+      import { onAuthStateChanged } from "https://www.unpkg.com/firebase@10.7.1/auth/dist/index.esm.js";
 
+      
       async function loadIlmoitukset() {
-      const endpoint = "https://script.google.com/macros/s/AKfycbxmQim-cBaYNMVyDayr4r-07S0R-vaIG4a7VZxL0zpAdDF7jEpkpAL5m4ZgrVU84VswIg/exec";
+      const endpoint = "https://script.google.com/macros/s/AKfycbz27icgPFlBMD3F5L7joMR7-lOVWWyQESPB9f862Tf7I4Xlu8j6CFPAQWB3bgWmEYXsCA/exec";
 
       try {
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint, {
+          method: "GET",
+          mode: "cors"
+        });
         const data = await response.json();
 
         const container = document.getElementById("report-container");
@@ -352,13 +360,17 @@
             const formData = new URLSearchParams();
             formData.append("rowNumber", entry.rowNumber);
 
-            fetch("https://script.google.com/macros/s/AKfycbyLK4vlKZAQ1Gt22KGwerw1hQlJtMvNxKDj-RZ08hE4nQdNOsvP5V9Qpi7fUEXnS6PHTA/exec", {
+            fetch(endpoint, {
               method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
               body: formData
             })
             .then(res => res.text())
             .then(msg => {
               console.log(msg);
+            
 
               ilmoitus.style.setProperty("display", "none", "important");
               ilmoitus.classList.remove("ilmoitus");
@@ -369,9 +381,9 @@
                 container.innerHTML = `<p style="color:black; font-size:20px;">Ei ilmoituksia tällä hetkellä.</p>`;
               }
             })
-            //.catch(err => {
-              //console.error("Poistossa tapahtui virhe:", err);
-            //});
+            .catch(err => {
+              console.error("Poistossa tapahtui virhe:", err);
+            });
           });
 
           link.addEventListener("click", (e) => {
@@ -420,7 +432,13 @@
       }
     }
 
-    window.onload = loadIlmoitukset;
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          loadIlmoitukset();
+        } else {
+          window.location.href = "https://repe.oseale.com";
+        }
+      });
     </script>
 </body>
 </html>
