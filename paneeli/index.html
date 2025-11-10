@@ -296,6 +296,7 @@
           container.appendChild(ilmoitus);
 
           document.querySelector(".box").classList.remove("hidden");
+          document.querySelector(".ldr").style.display = "none";
         });
       } catch (error) {
         console.error("Virhe ladattaessa ilmoituksia:", error);
