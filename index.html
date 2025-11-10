@@ -116,7 +116,7 @@
         .then(userCredential => {
           const user = userCredential.user;
           alert(`Tervetuloa, ${user.email}`);
-          // Optional: redirect after login
+          
           window.location.href = "https://repe.oseale.com/paneeli";
         })
         .catch(error => {
