@@ -115,7 +115,7 @@
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(userCredential => {
           const user = userCredential.user;
-          alert(`Tervetuloa, ${user.email}`);
+          //alert(`Tervetuloa, ${user.email}`);
           window.location.href = "https://repe.oseale.com/paneeli";
         })
         .catch(error => {
