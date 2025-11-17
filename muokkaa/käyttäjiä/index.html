@@ -116,6 +116,7 @@
           transform: scale(1.5);
           background-color: transparent;
           border: none;
+          display: none;
         }
 
         .ilmoitus_a {
@@ -288,7 +289,7 @@
 
 
 
-          link.textContent = `Ilmoitus #${reportNum} | ${new Date(entry["Aikaleima"]).toLocaleDateString("fi-FI")} | ${entry["Mitä tapahtui?"]}`;
+          link.textContent = `Ilmoitus #${reportNum} | ${new Date(entry["Aikaleima"]).toLocaleDateString("fi-FI")} | ${entry["Sähköposti"]}`;
           ilmoitus.appendChild(deleteBtn);
           ilmoitus.appendChild(link);
 
